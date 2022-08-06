@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] float thruster = 100f;
+    [SerializeField] float rotationThrust = 100f;
+    
+
     Rigidbody rb;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -21,7 +26,7 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            rb.AddRelativeForce(Vector3.up);
+            rb.AddRelativeForce(Vector3.up *thruster * Time.deltaTime);
         }
     }
 
@@ -29,11 +34,16 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            Debug.Log("Presed A - Rotate Left ");
+            ApplyRotation(rotationThrust);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            Debug.Log("Presed D - Rotate Right ");
+            ApplyRotation(-rotationThrust);
         }
+    }
+
+     void ApplyRotation(float rotationThisFrame)
+    {
+        transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
     }
 }

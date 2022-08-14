@@ -7,13 +7,12 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] float thruster = 100f;
     [SerializeField] float rotationThrust = 100f;
-    
-
     Rigidbody rb;
-
+    AudioSource audioSource;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -27,6 +26,16 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             rb.AddRelativeForce(Vector3.up *thruster * Time.deltaTime);
+            if(!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+
+            
+        }
+        else
+        {
+            audioSource.Stop();
         }
     }
 
@@ -44,8 +53,8 @@ public class Movement : MonoBehaviour
 
      void ApplyRotation(float rotationThisFrame)
     {
-        rb.freezeRotation = true;
+        rb.freezeRotation = true; //freeze rotation so we can manualy rotate
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
-        rb.freezeRotation = false;
+        rb.freezeRotation = false; //unfreeze rotation so the phtsics can takeover
     }
 }

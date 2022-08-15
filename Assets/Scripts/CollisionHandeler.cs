@@ -7,24 +7,40 @@ using UnityEngine.SceneManagement;
 public class CollisionHandeler : MonoBehaviour
 {
    void OnCollisionEnter(Collision other) 
-   {
+    {
         switch(other.gameObject.tag)//Variable to compare
         {
             case "Friendly"://this is the tag
                 Debug.Log("You are on the launch pad");//this is what to do there can be multipule conditions
                 break;//this means stop there is no more to do dont do any of the other cases as this one is satisfied
             case "Finish":
-                Debug.Log("You have landed");
+                LoadNextLevel();
                 break;    
             default://this means if none ofthe other cases are satisfied then do this
-            ReLoadLevel();
+                StartCrashSequence();
             break;
         }
-   }
+    }
 
-    void ReLoadLevel()
+   void StartCrashSequence()
+    {
+        GetComponent<Movement>().enabled = false;
+        Invoke("ReLoadLevel", 1f);
+    }
+   void ReLoadLevel()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;//this is the variable and can be placed in the brackets for load scene
         SceneManager.LoadScene(currentSceneIndex);
+    }
+
+   void LoadNextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;//this is the variable and can be placed in the brackets for load scene
+        int nextSceneIndex = currentSceneIndex + 1;
+        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+        {
+            nextSceneIndex = 0;
+        }
+        SceneManager.LoadScene(nextSceneIndex);
     }
 }

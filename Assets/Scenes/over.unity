@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086f5e437afb7d347bd9aa0a0f54733d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delay: 2
 --- !u!1001 &507825706279597709
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -542,7 +543,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rocket
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1916170494, guid: 17638a7e3a8ed82489cdaff16f4a7029, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 17638a7e3a8ed82489cdaff16f4a7029, type: 3}
 --- !u!1001 &7015597875819782038

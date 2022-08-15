@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandeler : MonoBehaviour
 {
+    [SerializeField] float delay = 2f;
+
    void OnCollisionEnter(Collision other) 
     {
         switch(other.gameObject.tag)//Variable to compare
@@ -14,7 +16,7 @@ public class CollisionHandeler : MonoBehaviour
                 Debug.Log("You are on the launch pad");//this is what to do there can be multipule conditions
                 break;//this means stop there is no more to do dont do any of the other cases as this one is satisfied
             case "Finish":
-                LoadNextLevel();
+                StartSuccessSequence();
                 break;    
             default://this means if none ofthe other cases are satisfied then do this
                 StartCrashSequence();
@@ -22,18 +24,25 @@ public class CollisionHandeler : MonoBehaviour
         }
     }
 
-   void StartCrashSequence()
+    void StartSuccessSequence()
     {
         GetComponent<Movement>().enabled = false;
-        Invoke("ReLoadLevel", 1f);
+        Invoke("LoadNextLevel", delay);
     }
-   void ReLoadLevel()
+
+    void StartCrashSequence()
+    {
+        GetComponent<Movement>().enabled = false;
+        Invoke("ReLoadLevel", delay);
+    }
+
+    void ReLoadLevel()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;//this is the variable and can be placed in the brackets for load scene
         SceneManager.LoadScene(currentSceneIndex);
     }
 
-   void LoadNextLevel()
+    void LoadNextLevel()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;//this is the variable and can be placed in the brackets for load scene
         int nextSceneIndex = currentSceneIndex + 1;

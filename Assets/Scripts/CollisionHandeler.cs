@@ -12,17 +12,21 @@ public class CollisionHandeler : MonoBehaviour
 
     AudioSource audioSource;
 
-     void Start()
+    bool isTransitioning = false;//this sets bool state that the game is being played
+
+    void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-   void OnCollisionEnter(Collision other) 
+    void OnCollisionEnter(Collision other) 
     {
+        if(isTransitioning) {return;}//this starts the if statemnt which means if you are not in transition then do these things
+
         switch(other.gameObject.tag)//Variable to compare
         {
             case "Friendly"://this is the tag
-                Debug.Log("You are on the launch pad");//this is what to do there can be multipule conditions
+                
                 break;//this means stop there is no more to do dont do any of the other cases as this one is satisfied
             case "Finish":
                 StartSuccessSequence();
@@ -35,6 +39,7 @@ public class CollisionHandeler : MonoBehaviour
 
     void StartSuccessSequence()
     {
+        isTransitioning = true;//this set the bool to true 
         audioSource.PlayOneShot(success);
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", delay);
@@ -42,6 +47,7 @@ public class CollisionHandeler : MonoBehaviour
 
     void StartCrashSequence()
     {
+        isTransitioning = true;
         audioSource.PlayOneShot(crash);
         GetComponent<Movement>().enabled = false;
         Invoke("ReLoadLevel", delay);

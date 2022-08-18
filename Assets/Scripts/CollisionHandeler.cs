@@ -10,6 +10,9 @@ public class CollisionHandeler : MonoBehaviour
     [SerializeField] AudioClip crash;
     [SerializeField] AudioClip success;
 
+    [SerializeField] ParticleSystem crashParticles;
+    [SerializeField] ParticleSystem successParticles;
+
     AudioSource audioSource;
 
     bool isTransitioning = false;//this sets bool state that the game is being played
@@ -40,6 +43,7 @@ public class CollisionHandeler : MonoBehaviour
     void StartSuccessSequence()
     {
         isTransitioning = true;//this set the bool to true 
+        successParticles.Play();
         audioSource.PlayOneShot(success);
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", delay);
@@ -48,7 +52,9 @@ public class CollisionHandeler : MonoBehaviour
     void StartCrashSequence()
     {
         isTransitioning = true;
+        crashParticles.Play();
         audioSource.PlayOneShot(crash);
+        
         GetComponent<Movement>().enabled = false;
         Invoke("ReLoadLevel", delay);
         

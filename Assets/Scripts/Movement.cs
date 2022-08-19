@@ -8,7 +8,12 @@ public class Movement : MonoBehaviour
     [SerializeField] float thruster = 100f;
     [SerializeField] float rotationThrust = 100f;
     [SerializeField] AudioClip mainEngine;
-    
+
+    [SerializeField] ParticleSystem mainParticles;
+    [SerializeField] ParticleSystem leftParticles;
+    [SerializeField] ParticleSystem leftParticles1;
+    [SerializeField] ParticleSystem rightParticles;
+    [SerializeField] ParticleSystem rightParticles1;
 
     Rigidbody rb;
     AudioSource audioSource;
@@ -34,10 +39,15 @@ public class Movement : MonoBehaviour
             {
                 audioSource.PlayOneShot(mainEngine);
             }
+            if(!mainParticles.isPlaying)
+            {
+                mainParticles.Play();
+            }
         }
         else
         {
             audioSource.Stop();
+            mainParticles.Stop();
         }
     }
 
@@ -46,10 +56,28 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             ApplyRotation(rotationThrust);
+            if (!rightParticles.isPlaying && !rightParticles1.isPlaying)
+            {
+                rightParticles.Play();
+                rightParticles1.Play();
+            }
+
         }
         else if (Input.GetKey(KeyCode.D))
         {
             ApplyRotation(-rotationThrust);
+            if (!leftParticles.isPlaying && !leftParticles1.isPlaying)
+            {
+                leftParticles.Play();
+                leftParticles1.Play();
+            }
+        }
+        else
+        {
+            rightParticles.Stop();
+            rightParticles1.Stop();
+            leftParticles.Stop();
+            leftParticles1.Stop();
         }
     }
 
@@ -57,6 +85,6 @@ public class Movement : MonoBehaviour
     {
         rb.freezeRotation = true; //freeze rotation so we can manualy rotate
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
-        rb.freezeRotation = false; //unfreeze rotation so the phtsics can takeover
+        rb.freezeRotation = false; //unfreeze rotation so the physics can takeover
     }
 }

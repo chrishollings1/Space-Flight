@@ -12,20 +12,37 @@ public class CollisionHandeler : MonoBehaviour
 
     [SerializeField] ParticleSystem crashParticles;
     [SerializeField] ParticleSystem successParticles;
-   
 
     AudioSource audioSource;
 
     bool isTransitioning = false;//this sets bool state that the game is being played
+    bool collisionDisabled = false;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
+    void Update() 
+    {
+        RespondToDebugKeys();
+    }
+
+    void RespondToDebugKeys()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+        else if(Input.GetKeyDown(KeyCode.C))
+        {
+            collisionDisabled = !collisionDisabled;//this is how to toggle
+        }
+    }
+
     void OnCollisionEnter(Collision other) 
     {
-        if(isTransitioning) {return;}//this starts the if statemnt which means if you are not in transition then do these things
+        if(isTransitioning || collisionDisabled) {return;}//this starts the if statemnt which means if you are not in transition then do these things
 
         switch(other.gameObject.tag)//Variable to compare
         {
@@ -55,7 +72,6 @@ public class CollisionHandeler : MonoBehaviour
         isTransitioning = true;
         crashParticles.Play();
         audioSource.PlayOneShot(crash);
-        
         GetComponent<Movement>().enabled = false;
         Invoke("ReLoadLevel", delay);
         
